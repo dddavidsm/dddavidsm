@@ -36,20 +36,21 @@ test('mobile navigation opens, navigates, and closes with Escape', async ({ page
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
 
-  const menuButton = page.getByRole('button', { name: 'Menu' });
+  const menuButton = page.locator('button[aria-controls="site-navigation"]');
+  await expect(menuButton).toHaveAccessibleName('Menu');
   await menuButton.click();
+
   const navigation = page.getByRole('navigation', { name: 'Primary navigation' });
   await expect(navigation).toBeVisible();
+  await expect(menuButton).toHaveAccessibleName('Close');
   await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
 
   await page.keyboard.press('Escape');
-  await expect(page.getByRole('button', { name: 'Menu' })).toBeFocused();
-  await expect(page.getByRole('button', { name: 'Menu' })).toHaveAttribute(
-    'aria-expanded',
-    'false',
-  );
+  await expect(menuButton).toBeFocused();
+  await expect(menuButton).toHaveAccessibleName('Menu');
+  await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
 
-  await page.getByRole('button', { name: 'Menu' }).click();
+  await menuButton.click();
   await navigation.getByRole('link', { name: 'Work', exact: true }).click();
   await expect(page).toHaveURL(/\/work$/);
 });
