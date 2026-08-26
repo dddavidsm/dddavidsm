@@ -23,7 +23,9 @@ const contentTypes = {
 };
 
 async function existingFile(pathname) {
-  const clean = normalize(pathname).replace(/^(\.\.[/\\])+/, '').replace(/^[/\\]+/, '');
+  const clean = normalize(pathname)
+    .replace(/^(\.\.[/\\])+/, '')
+    .replace(/^[/\\]+/, '');
   const candidate = resolve(join(root, clean));
   if (!candidate.startsWith(root)) return null;
 
@@ -47,14 +49,19 @@ async function existingFile(pathname) {
 async function sendFile(response, file, statusCode = 200) {
   const body = await readFile(file);
   response.statusCode = statusCode;
-  response.setHeader('Content-Type', contentTypes[extname(file)] ?? 'application/octet-stream');
+  response.setHeader(
+    'Content-Type',
+    contentTypes[extname(file)] ?? 'application/octet-stream',
+  );
   response.setHeader('Cache-Control', 'no-store');
   response.end(body);
 }
 
 createServer(async (request, response) => {
   try {
-    const pathname = decodeURIComponent(new URL(request.url ?? '/', 'http://localhost').pathname);
+    const pathname = decodeURIComponent(
+      new URL(request.url ?? '/', 'http://localhost').pathname,
+    );
     let route = pathname;
 
     if (basePath) {
