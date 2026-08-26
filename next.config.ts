@@ -1,24 +1,16 @@
 import type { NextConfig } from 'next';
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+
 const nextConfig: NextConfig = {
+  output: 'export',
+  basePath,
+  trailingSlash: true,
+  images: {
+    unoptimized: true,
+  },
   poweredByHeader: false,
   reactStrictMode: true,
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-          { key: 'X-Content-Type-Options', value: 'nosniff' },
-          { key: 'X-Frame-Options', value: 'DENY' },
-          {
-            key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=(), payment=()',
-          },
-        ],
-      },
-    ];
-  },
 };
 
 export default nextConfig;

@@ -2,7 +2,9 @@ import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 const directory = '.lighthouseci';
-const files = (await readdir(directory)).filter((file) => file.startsWith('lhr-') && file.endsWith('.json'));
+const files = (await readdir(directory)).filter(
+  (file) => file.startsWith('lhr-') && file.endsWith('.json'),
+);
 
 if (files.length === 0) {
   throw new Error('No Lighthouse JSON reports found.');
@@ -19,14 +21,25 @@ for (const file of files) {
   console.log(`  Accessibility: ${score(categories.accessibility?.score)}`);
   console.log(`  Best Practices: ${score(categories['best-practices']?.score)}`);
   console.log(`  SEO: ${score(categories.seo?.score)}`);
-  console.log(`  FCP: ${Math.round(audits['first-contentful-paint']?.numericValue ?? 0)} ms`);
-  console.log(`  LCP: ${Math.round(audits['largest-contentful-paint']?.numericValue ?? 0)} ms`);
+  console.log(
+    `  FCP: ${Math.round(audits['first-contentful-paint']?.numericValue ?? 0)} ms`,
+  );
+  console.log(
+    `  LCP: ${Math.round(audits['largest-contentful-paint']?.numericValue ?? 0)} ms`,
+  );
   console.log(`  Speed Index: ${Math.round(audits['speed-index']?.numericValue ?? 0)} ms`);
-  console.log(`  TBT: ${Math.round(audits['total-blocking-time']?.numericValue ?? 0)} ms`);
-  console.log(`  CLS: ${(audits['cumulative-layout-shift']?.numericValue ?? 0).toFixed(3)}`);
+  console.log(
+    `  TBT: ${Math.round(audits['total-blocking-time']?.numericValue ?? 0)} ms`,
+  );
+  console.log(
+    `  CLS: ${(audits['cumulative-layout-shift']?.numericValue ?? 0).toFixed(3)}`,
+  );
 
   const opportunities = Object.values(audits)
-    .filter((audit) => audit?.details?.type === 'opportunity' && (audit.details.overallSavingsMs ?? 0) > 50)
+    .filter(
+      (audit) =>
+        audit?.details?.type === 'opportunity' && (audit.details.overallSavingsMs ?? 0) > 50,
+    )
     .sort((a, b) => (b.details.overallSavingsMs ?? 0) - (a.details.overallSavingsMs ?? 0))
     .slice(0, 8);
 

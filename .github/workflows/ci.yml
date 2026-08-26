@@ -5,6 +5,10 @@ on:
     branches: [main]
   pull_request:
 
+env:
+  NEXT_PUBLIC_BASE_PATH: /dddavidsm
+  NEXT_PUBLIC_SITE_ORIGIN: https://dddavidsm.github.io
+
 jobs:
   quality:
     runs-on: ubuntu-latest
