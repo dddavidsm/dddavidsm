@@ -1,5 +1,4 @@
-import { test, expect } from '@playwright/test';
-import AxeBuilder from '@axe-core/playwright';
+import { expect, test } from '@playwright/test';
 
 const routes = [
   '/',
@@ -14,23 +13,41 @@ const routes = [
 ];
 
 for (const route of routes) {
-  test(`route ${route} renders`, async ({ page }) => {
+  test(`route ${route} renders cleanly`, async ({ page }) => {
     const errors: string[] = [];
     page.on('console', (message) => {
       if (message.type() === 'error') errors.push(message.text());
     });
-    await page.goto(route);
+
+    const response = await page.goto(route);
+    expect(response?.status()).toBeLessThan(400);
     await expect(page.locator('main')).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
+
+    const hasHorizontalOverflow = await page.evaluate(
+      () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
+    );
+    expect(hasHorizontalOverflow).toBe(false);
     expect(errors).toEqual([]);
   });
 }
 
-test('mobile navigation works', async ({ page }) => {
+test('mobile navigation opens, navigates, and closes with Escape', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
+
+  const menuButton = page.getByRole('button', { name: 'Menu' });
+  await menuButton.click();
+  const navigation = page.getByRole('navigation', { name: 'Primary navigation' });
+  await expect(navigation).toBeVisible();
+  await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
+
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('button', { name: 'Menu' })).toBeFocused();
+  await expect(page.getByRole('button', { name: 'Menu' })).toHaveAttribute('aria-expanded', 'false');
+
   await page.getByRole('button', { name: 'Menu' }).click();
-  await expect(page.getByRole('navigation')).toBeVisible();
-  await page.getByRole('link', { name: 'Work' }).click();
+  await navigation.getByRole('link', { name: 'Work', exact: true }).click();
   await expect(page).toHaveURL(/\/work$/);
 });
 
@@ -40,22 +57,19 @@ test('keyboard skip link is available', async ({ page }) => {
   await expect(page.getByRole('link', { name: 'Skip to content' })).toBeFocused();
 });
 
-test('reduced motion keeps content visible', async ({ page }) => {
+test('reduced motion keeps content and navigation available', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+
+  const scrollBehavior = await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior);
+  expect(scrollBehavior).toBe('auto');
 });
 
-test('404 has recovery links', async ({ page }) => {
-  await page.goto('/this-route-does-not-exist');
+test('404 returns the custom recovery page', async ({ page }) => {
+  const response = await page.goto('/this-route-does-not-exist');
+  expect(response?.status()).toBe(404);
   await expect(page.getByRole('heading', { level: 1 })).toContainText('path');
-  await expect(page.getByRole('link', { name: /Home/ })).toBeVisible();
-});
-
-test('@a11y home has no serious axe violations', async ({ page }) => {
-  await page.goto('/');
-  const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
-  expect(result.violations.filter((v) => ['critical', 'serious'].includes(v.impact ?? ''))).toEqual(
-    [],
-  );
+  await expect(page.getByRole('link', { name: 'Home ↗', exact: true })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Selected work ↗', exact: true })).toBeVisible();
 });

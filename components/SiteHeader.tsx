@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const links = [
   { href: '/work', label: 'Work' },
@@ -12,6 +12,20 @@ const links = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      setOpen(false);
+      menuButtonRef.current?.focus();
+    };
+
+    window.addEventListener('keydown', closeOnEscape);
+    return () => window.removeEventListener('keydown', closeOnEscape);
+  }, [open]);
 
   return (
     <header className="site-header">
@@ -20,6 +34,7 @@ export function SiteHeader() {
         <span className="brand-name">David Sánchez</span>
       </Link>
       <button
+        ref={menuButtonRef}
         className="menu-button"
         type="button"
         aria-expanded={open}
