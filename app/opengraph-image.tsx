@@ -24,10 +24,18 @@ export default function Image() {
         <span>DAVID SÁNCHEZ</span>
         <span>PORTFOLIO / 2026</span>
       </div>
-      <div style={{ fontSize: 110, lineHeight: 0.88, fontWeight: 700, letterSpacing: -5 }}>
-        FULL-STACK
-        <br />
-        DEVELOPER
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          fontSize: 110,
+          lineHeight: 0.88,
+          fontWeight: 700,
+          letterSpacing: -5,
+        }}
+      >
+        <span>FULL-STACK</span>
+        <span>DEVELOPER</span>
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
         <div style={{ width: 300, height: 20, background: '#111' }} />
