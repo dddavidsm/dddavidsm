@@ -19,14 +19,33 @@ export function SiteHeader() {
         <span>DS</span>
         <span className="brand-name">David Sánchez</span>
       </Link>
-      <button className="menu-button" type="button" aria-expanded={open} aria-controls="site-navigation" onClick={() => setOpen((value) => !value)}>
+      <button
+        className="menu-button"
+        type="button"
+        aria-expanded={open}
+        aria-controls="site-navigation"
+        onClick={() => setOpen((value) => !value)}
+      >
         {open ? 'Close' : 'Menu'}
       </button>
-      <nav id="site-navigation" className={open ? 'nav nav-open' : 'nav'} aria-label="Primary navigation">
+      <nav
+        id="site-navigation"
+        className={open ? 'nav nav-open' : 'nav'}
+        aria-label="Primary navigation"
+      >
         {links.map((link) => (
-          <Link key={link.href} href={link.href} onClick={() => setOpen(false)}>{link.label}</Link>
+          <Link key={link.href} href={link.href} onClick={() => setOpen(false)}>
+            {link.label}
+          </Link>
         ))}
-        <a href="https://github.com/dddavidsm" target="_blank" rel="noreferrer" onClick={() => setOpen(false)}>GitHub ↗</a>
+        <a
+          href="https://github.com/dddavidsm"
+          target="_blank"
+          rel="noreferrer"
+          onClick={() => setOpen(false)}
+        >
+          GitHub ↗
+        </a>
       </nav>
     </header>
   );

@@ -9,7 +9,11 @@ export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) return {};
@@ -53,15 +57,29 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
     <article className="case-study">
       <header className="project-hero section-shell">
         <div className="project-kicker mono">
-          <span>{project.index}</span><span>{project.category}</span><span>{project.year}</span>
+          <span>{project.index}</span>
+          <span>{project.category}</span>
+          <span>{project.year}</span>
         </div>
         <h1>{project.title}</h1>
         <p className="project-statement">{project.statement}</p>
         <dl className="project-meta">
-          <div><dt>Role</dt><dd>{project.role}</dd></div>
-          <div><dt>Status</dt><dd>{project.status}</dd></div>
-          <div><dt>Stack</dt><dd>{project.stack.slice(0, 4).join(' · ')}</dd></div>
-          <div><dt>Year</dt><dd>{project.year}</dd></div>
+          <div>
+            <dt>Role</dt>
+            <dd>{project.role}</dd>
+          </div>
+          <div>
+            <dt>Status</dt>
+            <dd>{project.status}</dd>
+          </div>
+          <div>
+            <dt>Stack</dt>
+            <dd>{project.stack.slice(0, 4).join(' · ')}</dd>
+          </div>
+          <div>
+            <dt>Year</dt>
+            <dd>{project.year}</dd>
+          </div>
         </dl>
       </header>
 
@@ -70,22 +88,39 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       </div>
 
       <section className="case-section section-shell two-col">
-        <div><p className="eyebrow mono">01 / OVERVIEW</p><h2>Context</h2></div>
-        <div className="case-body"><p className="lead-copy">{project.context}</p></div>
+        <div>
+          <p className="eyebrow mono">01 / OVERVIEW</p>
+          <h2>Context</h2>
+        </div>
+        <div className="case-body">
+          <p className="lead-copy">{project.context}</p>
+        </div>
       </section>
 
       <section className="case-section section-shell two-col dark-panel">
-        <div><p className="eyebrow mono">02 / PROBLEM</p><h2>What had to work.</h2></div>
-        <div className="case-body"><p className="lead-copy">{project.problem}</p><p>{project.contribution}</p></div>
+        <div>
+          <p className="eyebrow mono">02 / PROBLEM</p>
+          <h2>What had to work.</h2>
+        </div>
+        <div className="case-body">
+          <p className="lead-copy">{project.problem}</p>
+          <p>{project.contribution}</p>
+        </div>
       </section>
 
       <section className="case-section section-shell">
-        <div className="section-intro"><p className="eyebrow mono">03 / SYSTEM</p><h2>Architecture</h2></div>
+        <div className="section-intro">
+          <p className="eyebrow mono">03 / SYSTEM</p>
+          <h2>Architecture</h2>
+        </div>
         <ArchitectureDiagram nodes={project.architecture} />
       </section>
 
       <section className="case-section section-shell challenges-section">
-        <div className="section-intro"><p className="eyebrow mono">04 / TECHNICAL CHALLENGES</p><h2>Where the engineering mattered.</h2></div>
+        <div className="section-intro">
+          <p className="eyebrow mono">04 / TECHNICAL CHALLENGES</p>
+          <h2>Where the engineering mattered.</h2>
+        </div>
         <div className="challenge-grid">
           {project.challenges.map((challenge, index) => (
             <article key={challenge.title}>
@@ -98,15 +133,24 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       </section>
 
       <section className="case-section section-shell outcome-section">
-        <div><p className="eyebrow mono">05 / OUTCOME</p><h2>Result</h2></div>
+        <div>
+          <p className="eyebrow mono">05 / OUTCOME</p>
+          <h2>Result</h2>
+        </div>
         <div className="case-body">
           <p className="lead-copy">{project.outcome}</p>
           <ul className="inline-list mono" aria-label="Project technology">
-            {project.stack.map((item) => <li key={item}>{item}</li>)}
+            {project.stack.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
           </ul>
           {project.publicSource && project.sourceUrl ? (
-            <a className="text-link" href={project.sourceUrl} target="_blank" rel="noreferrer">View repository ↗</a>
-          ) : <span className="private-note mono">SOURCE / PRIVATE</span>}
+            <a className="text-link" href={project.sourceUrl} target="_blank" rel="noreferrer">
+              View repository ↗
+            </a>
+          ) : (
+            <span className="private-note mono">SOURCE / PRIVATE</span>
+          )}
         </div>
       </section>
 
@@ -115,7 +159,10 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         <strong>{nextProject.title}</strong>
         <span aria-hidden="true">↗</span>
       </Link>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
     </article>
   );
 }

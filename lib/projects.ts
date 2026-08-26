@@ -51,7 +51,12 @@ export const projects: Project[] = [
       'A reservation flow has to keep the guest experience simple while protecting the backend from invalid or conflicting time slots. The application also needed a repeatable environment for frontend, API and database development.',
     contribution:
       'I developed the product across the user-facing React flow and the Laravel API surface, including guest checkout, court filtering, cart behaviour and deployment-oriented Docker configuration.',
-    architecture: ['React / Vite storefront', 'Laravel REST API', 'MySQL persistence', 'Docker Compose environment'],
+    architecture: [
+      'React / Vite storefront',
+      'Laravel REST API',
+      'MySQL persistence',
+      'Docker Compose environment',
+    ],
     challenges: [
       {
         title: 'Availability before confirmation',
@@ -81,7 +86,8 @@ export const projects: Project[] = [
     foreground: '#15110e',
     summary:
       'A structural inspection workspace for documenting reinforced-concrete elements on canvas and generating technical DXF drawings from inspection data.',
-    statement: 'Turning field inspection input into consistent technical geometry and exportable drawings.',
+    statement:
+      'Turning field inspection input into consistent technical geometry and exportable drawings.',
     stack: ['React 19', 'Vite', 'FastAPI', 'Python', 'Supabase', 'ezdxf', 'Shapely', 'Docker'],
     context:
       'StructCad is an engineering application for structural inspections. It models pillars, beams, slabs, footings and stairs, combines forms with a visual canvas, and exports technical drawings through a Python DXF engine.',
@@ -89,7 +95,12 @@ export const projects: Project[] = [
       'Inspection data is geometric, stateful and visual. The difficult part is keeping user edits, canvas representation and generated DXF output aligned while supporting very different structural element types and screen sizes.',
     contribution:
       'I worked across the React workspace, structural state, responsive editor behaviour and Python export pipeline, including reinforcement geometry, stirrups, damaged zones, view fitting and DXF generation workflows.',
-    architecture: ['React inspection workspace', 'FastAPI generation endpoints', 'Python DXF geometry engine', 'Supabase history and access layer'],
+    architecture: [
+      'React inspection workspace',
+      'FastAPI generation endpoints',
+      'Python DXF geometry engine',
+      'Supabase history and access layer',
+    ],
     challenges: [
       {
         title: 'Geometry consistency',
@@ -123,15 +134,30 @@ export const projects: Project[] = [
     foreground: '#0c1520',
     summary:
       'A tablet-first PWA for technical building inspections, built around local-first project persistence, plan annotation and professional document export.',
-    statement: 'Field software designed to keep working when connectivity is unreliable or expensive.',
-    stack: ['React 19', 'TypeScript', 'Vite', 'React-Konva', 'Dexie / IndexedDB', 'Supabase', 'PWA', 'jsPDF'],
+    statement:
+      'Field software designed to keep working when connectivity is unreliable or expensive.',
+    stack: [
+      'React 19',
+      'TypeScript',
+      'Vite',
+      'React-Konva',
+      'Dexie / IndexedDB',
+      'Supabase',
+      'PWA',
+      'jsPDF',
+    ],
     context:
       'EEDIF is an inspection platform for field teams documenting projects, zones, croquis, lesions, photographs and observations. It is deliberately tablet-first and offline-first rather than assuming a continuous network connection.',
     problem:
       'Large inspection projects contain visual and document-heavy data. Reloading entire projects from the network is slow and creates avoidable transfer costs, while field use cannot rely on stable connectivity.',
     contribution:
       'I worked on the local-first architecture, inspection workspace, canvas behaviour, project persistence and export flows, with IndexedDB acting as the primary local source of truth and Supabase used as an optional synchronization layer.',
-    architecture: ['React / TypeScript PWA', 'Dexie + IndexedDB local source of truth', 'Optional Supabase synchronization', 'Worker-assisted PDF / ZIP / JSON exports'],
+    architecture: [
+      'React / TypeScript PWA',
+      'Dexie + IndexedDB local source of truth',
+      'Optional Supabase synchronization',
+      'Worker-assisted PDF / ZIP / JSON exports',
+    ],
     challenges: [
       {
         title: 'Local-first data model',
@@ -166,14 +192,28 @@ export const projects: Project[] = [
     summary:
       'A Flutter mobile and tablet client that brings laboratory documents, tests, requests, notifications and account workflows into one secure application.',
     statement: 'Enterprise workflows redesigned for a touch-first mobile and tablet context.',
-    stack: ['Flutter', 'Dart', 'Dio', 'GoRouter', 'Secure Storage', 'Local Authentication', 'Android', 'iOS'],
+    stack: [
+      'Flutter',
+      'Dart',
+      'Dio',
+      'GoRouter',
+      'Secure Storage',
+      'Local Authentication',
+      'Android',
+      'iOS',
+    ],
     context:
       'HCLab Mobile is a Flutter client for a laboratory platform. It consolidates authentication, test consultation, documents, requests, budgets, calendar, notifications and guided help into a single mobile experience.',
     problem:
       'The application has to translate a broad existing service surface into reliable touch-first flows while handling persistent sessions, secure credential storage, optional biometrics and responsive layouts across phones and tablets.',
     contribution:
       'I worked on the Flutter client architecture and user flows, including session restoration, reusable responsive components, secure local persistence, biometric access and mobile/tablet validation.',
-    architecture: ['Feature-oriented Flutter client', 'Dio HTTP and cookie session layer', 'Secure local credential storage', 'Shared responsive presentation components'],
+    architecture: [
+      'Feature-oriented Flutter client',
+      'Dio HTTP and cookie session layer',
+      'Secure local credential storage',
+      'Shared responsive presentation components',
+    ],
     challenges: [
       {
         title: 'Session reliability',
@@ -207,15 +247,28 @@ export const projects: Project[] = [
     foreground: '#171020',
     summary:
       'A collaborative React and Node.js product integrating an AI-assisted WhatsApp bot with automated scheduling through Google Calendar.',
-    statement: 'A practical example of language models connected to real tools instead of isolated chat UI.',
-    stack: ['React 18', 'Node.js', 'Express', 'OpenAI API', 'WhatsApp / Baileys', 'Google Calendar API'],
+    statement:
+      'A practical example of language models connected to real tools instead of isolated chat UI.',
+    stack: [
+      'React 18',
+      'Node.js',
+      'Express',
+      'OpenAI API',
+      'WhatsApp / Baileys',
+      'Google Calendar API',
+    ],
     context:
       'HDSolutions is a collaborative web project by Hugo and David. Alongside the React site, its backend connects a WhatsApp automation flow with an OpenAI model and Google Calendar APIs.',
     problem:
       'A useful AI assistant needs more than generated text: it has to receive messages, preserve application logic and connect model output to real scheduling tools without exposing secrets in the client.',
     contribution:
       'I contributed to the full-stack product and its automation architecture, working across the React experience and Node/Express backend integrations used by the messaging and scheduling workflow.',
-    architecture: ['React web client', 'Node.js / Express backend', 'OpenAI model integration', 'WhatsApp and Calendar tool connections'],
+    architecture: [
+      'React web client',
+      'Node.js / Express backend',
+      'OpenAI model integration',
+      'WhatsApp and Calendar tool connections',
+    ],
     challenges: [
       {
         title: 'Tool-connected AI',

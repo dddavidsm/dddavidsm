@@ -11,7 +11,9 @@ export function SiteFooter() {
       </p>
       <div className="footer-links">
         <a href={`mailto:${profile.email}`}>{profile.email}</a>
-        <a href={profile.github} target="_blank" rel="noreferrer">GitHub ↗</a>
+        <a href={profile.github} target="_blank" rel="noreferrer">
+          GitHub ↗
+        </a>
         <Link href="/resume">Resume ↗</Link>
       </div>
       <div className="footer-bottom mono">

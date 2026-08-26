@@ -1,12 +1,24 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-const routes = ['/', '/work', '/work/badia-padel-tour', '/work/structcad', '/work/eedif', '/work/hclab-mobile', '/work/hdsolutions', '/about', '/resume'];
+const routes = [
+  '/',
+  '/work',
+  '/work/badia-padel-tour',
+  '/work/structcad',
+  '/work/eedif',
+  '/work/hclab-mobile',
+  '/work/hdsolutions',
+  '/about',
+  '/resume',
+];
 
 for (const route of routes) {
   test(`route ${route} renders`, async ({ page }) => {
     const errors: string[] = [];
-    page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
+    page.on('console', (message) => {
+      if (message.type() === 'error') errors.push(message.text());
+    });
     await page.goto(route);
     await expect(page.locator('main')).toBeVisible();
     expect(errors).toEqual([]);
@@ -43,5 +55,7 @@ test('404 has recovery links', async ({ page }) => {
 test('@a11y home has no serious axe violations', async ({ page }) => {
   await page.goto('/');
   const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
-  expect(result.violations.filter((v) => ['critical', 'serious'].includes(v.impact ?? ''))).toEqual([]);
+  expect(result.violations.filter((v) => ['critical', 'serious'].includes(v.impact ?? ''))).toEqual(
+    [],
+  );
 });

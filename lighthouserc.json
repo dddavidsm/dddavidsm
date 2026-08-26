@@ -1,7 +1,11 @@
 {
   "ci": {
     "collect": {
-      "url": ["http://localhost:3000/", "http://localhost:3000/work", "http://localhost:3000/work/structcad"],
+      "url": [
+        "http://localhost:3000/",
+        "http://localhost:3000/work",
+        "http://localhost:3000/work/structcad"
+      ],
       "startServerCommand": "npm run start",
       "startServerReadyPattern": "Ready",
       "numberOfRuns": 1

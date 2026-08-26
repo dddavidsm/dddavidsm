@@ -14,10 +14,15 @@ export default function WorkPage() {
       <header className="index-hero">
         <p className="eyebrow mono">WORK / {String(projects.length).padStart(2, '0')}</p>
         <h1>Selected systems, not demo cards.</h1>
-        <p>Full-stack products, engineering software, offline-first field tooling, mobile development and AI-connected workflows.</p>
+        <p>
+          Full-stack products, engineering software, offline-first field tooling, mobile development
+          and AI-connected workflows.
+        </p>
       </header>
       <div className="project-list">
-        {projects.map((project) => <ProjectCard key={project.slug} project={project} />)}
+        {projects.map((project) => (
+          <ProjectCard key={project.slug} project={project} />
+        ))}
       </div>
     </section>
   );

@@ -7,7 +7,11 @@ export function ArchitectureDiagram({ nodes }: { nodes: string[] }) {
             <span className="mono">0{index + 1}</span>
             <strong>{node}</strong>
           </div>
-          {index < nodes.length - 1 ? <span className="architecture-arrow" aria-hidden="true">↓</span> : null}
+          {index < nodes.length - 1 ? (
+            <span className="architecture-arrow" aria-hidden="true">
+              ↓
+            </span>
+          ) : null}
         </div>
       ))}
     </div>
