@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { ArchitectureDiagram } from '@/components/ArchitectureDiagram';
 import { ProjectVisual } from '@/components/ProjectVisual';
 import { getNextProject, getProject, projects } from '@/lib/projects';
+import { absoluteUrl } from '@/lib/site';
 
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
@@ -17,21 +18,23 @@ export async function generateMetadata({
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) return {};
+  const projectUrl = absoluteUrl(`/work/${project.slug}`);
+  const imageUrl = absoluteUrl(`/work/${project.slug}/opengraph-image`);
   return {
     title: project.title,
     description: project.summary,
-    alternates: { canonical: `/work/${project.slug}` },
+    alternates: { canonical: projectUrl },
     openGraph: {
       title: `${project.title} — Case Study`,
       description: project.summary,
-      url: `/work/${project.slug}`,
-      images: [{ url: `/work/${project.slug}/opengraph-image` }],
+      url: projectUrl,
+      images: [{ url: imageUrl }],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${project.title} — Case Study`,
       description: project.summary,
-      images: [`/work/${project.slug}/opengraph-image`],
+      images: [imageUrl],
     },
   };
 }
@@ -49,7 +52,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
     description: project.summary,
     creator: { '@type': 'Person', name: 'David Sánchez' },
     dateCreated: project.year,
-    url: `/work/${project.slug}`,
+    url: absoluteUrl(`/work/${project.slug}`),
     keywords: project.stack.join(', '),
   };
 

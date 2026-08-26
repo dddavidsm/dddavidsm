@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { basePath, routeUrl } from './routes';
 
 const routes = [
   '/',
@@ -19,7 +20,7 @@ for (const route of routes) {
       if (message.type() === 'error') errors.push(message.text());
     });
 
-    const response = await page.goto(route);
+    const response = await page.goto(routeUrl(route));
     expect(response?.status()).toBeLessThan(400);
     await expect(page.locator('main')).toBeVisible();
     await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
@@ -34,7 +35,7 @@ for (const route of routes) {
 
 test('mobile navigation opens, navigates, and closes with Escape', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
+  await page.goto(routeUrl('/'));
 
   const menuButton = page.locator('button[aria-controls="site-navigation"]');
   await expect(menuButton).toHaveAccessibleName('Menu');
@@ -51,19 +52,21 @@ test('mobile navigation opens, navigates, and closes with Escape', async ({ page
   await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
 
   await menuButton.click();
-  await navigation.getByRole('link', { name: 'Work', exact: true }).click();
-  await expect(page).toHaveURL(/\/work$/);
+  const workLink = navigation.getByRole('link', { name: 'Work', exact: true });
+  await expect(workLink).toHaveAttribute('href', `${basePath}/work`);
+  await workLink.click();
+  expect(new URL(page.url()).pathname).toMatch(/\/work\/?$/);
 });
 
 test('keyboard skip link is available', async ({ page }) => {
-  await page.goto('/');
+  await page.goto(routeUrl('/'));
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: 'Skip to content' })).toBeFocused();
 });
 
 test('reduced motion keeps content and navigation available', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/');
+  await page.goto(routeUrl('/'));
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 
   const scrollBehavior = await page.evaluate(
@@ -73,7 +76,7 @@ test('reduced motion keeps content and navigation available', async ({ page }) =
 });
 
 test('404 returns the custom recovery page', async ({ page }) => {
-  const response = await page.goto('/this-route-does-not-exist');
+  const response = await page.goto(routeUrl('/this-route-does-not-exist'));
   expect(response?.status()).toBe(404);
   await expect(page.getByRole('heading', { level: 1 })).toContainText('path');
   await expect(page.getByRole('link', { name: 'Home ↗', exact: true })).toBeVisible();

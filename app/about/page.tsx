@@ -1,12 +1,13 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { profile } from '@/lib/profile';
+import { absoluteUrl } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'About',
   description:
     'About David Sánchez, a Full-Stack Developer working across product engineering, AI-enabled workflows and web systems.',
-  alternates: { canonical: '/about' },
+  alternates: { canonical: absoluteUrl('/about') },
 };
 
 export default function AboutPage() {

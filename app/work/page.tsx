@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 import { ProjectCard } from '@/components/ProjectCard';
 import { projects } from '@/lib/projects';
+import { absoluteUrl } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Selected Work',
   description: 'Selected full-stack, engineering, mobile and AI-enabled projects by David Sánchez.',
-  alternates: { canonical: '/work' },
+  alternates: { canonical: absoluteUrl('/work') },
 };
 
 export default function WorkPage() {

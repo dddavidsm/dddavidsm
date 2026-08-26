@@ -1,6 +1,12 @@
 import type { MetadataRoute } from 'next';
+import { absoluteUrl, siteOrigin } from '@/lib/site';
+
+export const dynamic = 'force-static';
 
 export default function robots(): MetadataRoute.Robots {
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://dddavidsm.vercel.app';
-  return { rules: { userAgent: '*', allow: '/' }, sitemap: `${base}/sitemap.xml`, host: base };
+  return {
+    rules: { userAgent: '*', allow: '/' },
+    sitemap: absoluteUrl('/sitemap.xml'),
+    host: siteOrigin,
+  };
 }

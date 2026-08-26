@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { routeUrl } from './routes';
 
 const routes = [
   '/',
@@ -22,7 +23,7 @@ test('@links internal, external, hash, and email links are valid', async ({
 
   const hrefs = new Set<string>();
   for (const route of routes) {
-    await page.goto(route);
+    await page.goto(routeUrl(route));
     const routeHrefs = await page
       .locator('a[href]')
       .evaluateAll((anchors) =>

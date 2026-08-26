@@ -1,10 +1,12 @@
 import type { Metadata } from 'next';
 import { profile } from '@/lib/profile';
 import { projects } from '@/lib/projects';
+import { absoluteUrl } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Resume',
   description: 'Print-friendly resume for David Sánchez, Full-Stack Developer.',
+  alternates: { canonical: absoluteUrl('/resume') },
   robots: { index: false, follow: true },
 };
 
