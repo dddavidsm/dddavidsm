@@ -44,7 +44,10 @@ test('mobile navigation opens, navigates, and closes with Escape', async ({ page
 
   await page.keyboard.press('Escape');
   await expect(page.getByRole('button', { name: 'Menu' })).toBeFocused();
-  await expect(page.getByRole('button', { name: 'Menu' })).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.getByRole('button', { name: 'Menu' })).toHaveAttribute(
+    'aria-expanded',
+    'false',
+  );
 
   await page.getByRole('button', { name: 'Menu' }).click();
   await navigation.getByRole('link', { name: 'Work', exact: true }).click();
@@ -62,7 +65,9 @@ test('reduced motion keeps content and navigation available', async ({ page }) =
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 
-  const scrollBehavior = await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior);
+  const scrollBehavior = await page.evaluate(
+    () => getComputedStyle(document.documentElement).scrollBehavior,
+  );
   expect(scrollBehavior).toBe('auto');
 });
 
