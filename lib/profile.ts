@@ -1,0 +1,41 @@
+export const profile = {
+  name: 'David Sánchez',
+  title: 'Full-Stack Developer',
+  intro:
+    'I build web applications, engineering software and AI-enabled workflows across product, frontend and backend.',
+  email: 'david.sanchez.mora@ibadia.cat',
+  github: 'https://github.com/dddavidsm',
+  githubHandle: '@dddavidsm',
+  location: null,
+  education: {
+    program: 'Higher Technician in Web Application Development (DAW)',
+    school: 'Institut Badia del Vallès',
+    period: '2024 — 2026',
+  },
+  capabilities: [
+    {
+      index: '01',
+      title: 'Full-Stack Development',
+      copy: 'Product-oriented web development spanning interface architecture, APIs, data flows and deployment.',
+      items: ['React', 'TypeScript', 'JavaScript', 'Laravel', 'PHP', 'FastAPI', 'Python', 'SQL', 'Java'],
+    },
+    {
+      index: '02',
+      title: 'AI & Automation',
+      copy: 'Language models used as part of software workflows: integration, agentic tooling, structured outputs and automation.',
+      items: ['LLM integrations', 'Agentic workflows', 'Prompt engineering', 'Context engineering', 'Tool calling', 'Structured outputs'],
+    },
+    {
+      index: '03',
+      title: 'E-commerce & Web',
+      copy: 'Storefront engineering focused on theme architecture, product systems, search visibility and conversion-aware UX.',
+      items: ['Shopify', 'Liquid', 'Theme architecture', 'Product & variant UX', 'Technical SEO', 'Structured data'],
+    },
+    {
+      index: '04',
+      title: 'Infrastructure & Delivery',
+      copy: 'Pragmatic delivery workflows with containerized environments, CI checks and cloud deployment.',
+      items: ['Docker', 'Git', 'GitHub Actions', 'Vercel', 'Supabase', 'Render', 'Linux'],
+    },
+  ],
+} as const;
