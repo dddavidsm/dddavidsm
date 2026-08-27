@@ -16,6 +16,7 @@ for (const file of files) {
   const audits = report.audits;
   const score = (value) => Math.round((value ?? 0) * 100);
   const ms = (id) => Math.round(audits[id]?.numericValue ?? 0);
+  const kb = (id) => Math.round((audits[id]?.numericValue ?? 0) / 1024);
 
   console.log(`\nLighthouse: ${report.finalDisplayedUrl}`);
   console.log(`  Performance: ${score(categories.performance?.score)}`);
@@ -27,6 +28,15 @@ for (const file of files) {
   console.log(`  Speed Index: ${ms('speed-index')} ms`);
   console.log(`  TBT: ${ms('total-blocking-time')} ms`);
   console.log(`  CLS: ${(audits['cumulative-layout-shift']?.numericValue ?? 0).toFixed(3)}`);
+  console.log(`  Transfer: ${kb('total-byte-weight')} KiB`);
+  console.log(`  Main thread: ${ms('mainthread-work-breakdown')} ms`);
+  console.log(`  JS execution: ${ms('bootup-time')} ms`);
+
+  const lcpSnippet =
+    audits['largest-contentful-paint-element']?.details?.items?.[0]?.node?.snippet ?? null;
+  if (lcpSnippet) {
+    console.log(`  LCP element: ${String(lcpSnippet).replace(/\s+/g, ' ').slice(0, 180)}`);
+  }
 
   const opportunities = Object.values(audits)
     .filter((audit) => {
@@ -42,7 +52,9 @@ for (const file of files) {
     console.log('  Opportunities:');
     for (const audit of opportunities) {
       const savings = Math.round(audit.details.overallSavingsMs);
-      console.log(`    - ${audit.title}: ~${savings} ms`);
+      const bytes = Math.round((audit.details.overallSavingsBytes ?? 0) / 1024);
+      const byteLabel = bytes > 0 ? `, ~${bytes} KiB` : '';
+      console.log(`    - ${audit.title}: ~${savings} ms${byteLabel}`);
     }
   }
 }
