@@ -61,10 +61,14 @@ async function existingFile(pathname) {
 async function sendFile(request, response, file, statusCode = 200) {
   const body = await readFile(file);
   const extension = extname(file);
-  const acceptsGzip = /(?:^|,|\s)gzip(?:,|\s|$)/i.test(\n    request.headers['accept-encoding'] ?? '',\n  );
+  const acceptsGzip = /(?:^|,|\s)gzip(?:,|\s|$)/i.test(
+    request.headers['accept-encoding'] ?? '',
+  );
   const shouldCompress =
     acceptsGzip && compressibleExtensions.has(extension) && body.byteLength >= 1024;
-  const isImmutableAsset = file.includes(\n    `${join('_next', 'static')}${process.platform === 'win32' ? '\\' : '/'}`,\n  );
+  const isImmutableAsset = file.includes(
+    `${join('_next', 'static')}${process.platform === 'win32' ? '\\' : '/'}`,
+  );
 
   response.statusCode = statusCode;
   response.setHeader('Content-Type', contentTypes[extension] ?? 'application/octet-stream');
