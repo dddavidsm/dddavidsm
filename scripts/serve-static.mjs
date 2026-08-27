@@ -61,9 +61,7 @@ async function existingFile(pathname) {
 async function sendFile(request, response, file, statusCode = 200) {
   const body = await readFile(file);
   const extension = extname(file);
-  const acceptsGzip = /(?:^|,|\s)gzip(?:,|\s|$)/i.test(
-    request.headers['accept-encoding'] ?? '',
-  );
+  const acceptsGzip = /(?:^|,|\s)gzip(?:,|\s|$)/i.test(request.headers['accept-encoding'] ?? '');
   const shouldCompress =
     acceptsGzip && compressibleExtensions.has(extension) && body.byteLength >= 1024;
   const isImmutableAsset = file.includes(
