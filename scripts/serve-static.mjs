@@ -1,6 +1,7 @@
-import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
+import { createServer } from 'node:http';
 import { extname, join, normalize, resolve } from 'node:path';
+import { gzipSync } from 'node:zlib';
 
 const root = resolve('out');
 const port = Number(process.env.PORT ?? 3000);
@@ -21,6 +22,17 @@ const contentTypes = {
   '.woff2': 'font/woff2',
   '.xml': 'application/xml; charset=utf-8',
 };
+
+const compressibleExtensions = new Set([
+  '.css',
+  '.html',
+  '.js',
+  '.json',
+  '.svg',
+  '.txt',
+  '.webmanifest',
+  '.xml',
+]);
 
 async function existingFile(pathname) {
   const clean = normalize(pathname)
@@ -46,11 +58,28 @@ async function existingFile(pathname) {
   return null;
 }
 
-async function sendFile(response, file, statusCode = 200) {
+async function sendFile(request, response, file, statusCode = 200) {
   const body = await readFile(file);
+  const extension = extname(file);
+  const acceptsGzip = /(?:^|,|\s)gzip(?:,|\s|$)/i.test(request.headers['accept-encoding'] ?? '');
+  const shouldCompress =
+    acceptsGzip && compressibleExtensions.has(extension) && body.byteLength >= 1024;
+  const isImmutableAsset = file.includes(`${join('_next', 'static')}${process.platform === 'win32' ? '\\' : '/'}`);
+
   response.statusCode = statusCode;
-  response.setHeader('Content-Type', contentTypes[extname(file)] ?? 'application/octet-stream');
-  response.setHeader('Cache-Control', 'no-store');
+  response.setHeader('Content-Type', contentTypes[extension] ?? 'application/octet-stream');
+  response.setHeader('Vary', 'Accept-Encoding');
+  response.setHeader(
+    'Cache-Control',
+    isImmutableAsset ? 'public, max-age=31536000, immutable' : 'public, max-age=0, must-revalidate',
+  );
+
+  if (shouldCompress) {
+    response.setHeader('Content-Encoding', 'gzip');
+    response.end(gzipSync(body, { level: 6 }));
+    return;
+  }
+
   response.end(body);
 }
 
@@ -64,17 +93,17 @@ createServer(async (request, response) => {
       else if (route.startsWith(`${basePath}/`)) route = route.slice(basePath.length);
       else {
         const notFound = await existingFile('/404.html');
-        if (notFound) return sendFile(response, notFound, 404);
+        if (notFound) return sendFile(request, response, notFound, 404);
         response.statusCode = 404;
         return response.end('Not found');
       }
     }
 
     const file = await existingFile(route === '/' ? '/index.html' : route);
-    if (file) return sendFile(response, file);
+    if (file) return sendFile(request, response, file);
 
     const notFound = await existingFile('/404.html');
-    if (notFound) return sendFile(response, notFound, 404);
+    if (notFound) return sendFile(request, response, notFound, 404);
     response.statusCode = 404;
     return response.end('Not found');
   } catch (error) {
