@@ -4,17 +4,25 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
 
 env:
   NEXT_PUBLIC_BASE_PATH: /dddavidsm
   NEXT_PUBLIC_SITE_ORIGIN: https://dddavidsm.github.io
 
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
   quality:
+    name: QUALITY
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: npm
@@ -35,3 +43,27 @@ jobs:
         run: node scripts/report-lighthouse.mjs
       - name: Lighthouse assertions
         run: npx @lhci/cli@0.15.x assert
+      - name: Upload GitHub Pages artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./out
+
+  deploy:
+    name: DEPLOY
+    if: github.event_name != 'pull_request'
+    needs: quality
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
