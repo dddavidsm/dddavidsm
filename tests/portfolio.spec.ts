@@ -53,7 +53,7 @@ test('mobile navigation opens, navigates, and closes with Escape', async ({ page
 
   await menuButton.click();
   const workLink = navigation.getByRole('link', { name: 'Work', exact: true });
-  await expect(workLink).toHaveAttribute('href', `${basePath}/work`);
+  await expect(workLink).toHaveAttribute('href', `${basePath}/work/`);
   await workLink.click();
   expect(new URL(page.url()).pathname).toMatch(/\/work\/?$/);
 });
